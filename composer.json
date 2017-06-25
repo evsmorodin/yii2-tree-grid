@@ -24,7 +24,7 @@
   "repositories": [
     {
       "type": "git",
-      "url": "https://github.com/yegorus/gridtreeview.git"
+      "url": "https://github.com/yegorus/yii2-gridtreeview.git"
     }
   ]
 }
