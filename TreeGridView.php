@@ -5,6 +5,7 @@ namespace yegorus\treegrid;
 use kartik\grid\GridView;
 use yii\base\Widget;
 use yii\data\ArrayDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 
@@ -18,11 +19,14 @@ class TreeGridView extends Widget
     /** @var TreeDataProvider */
     public $treeDataProvider;
 
+    public $contentOptions = [];
+    public $content;
+    public $url;
+
     public function run()
     {
-
         return GridView::widget([
-            'dataProvider' => new ArrayDataProvider(['allModels' => $this->treeDataProvider->getModels()]),
+            'dataProvider' => new ArrayDataProvider(['allModels' => $this->treeDataProvider->getModels(), 'pagination' => false]),
             'rowOptions' => function ($model){
                 return [
                     'style' => ($model->verticalModel->lvl > 0 ? 'display: none;' : ''),
@@ -58,7 +62,7 @@ class TreeGridView extends Widget
             [
                 'content' => function($model) {
                     return str_repeat('&nbsp;&nbsp;', $model->verticalModel->lvl * 3) .
-                        Html::a($model->verticalModel->name, $model->getLink(), ['target' => '_blank', 'style' => ['color' => 'inherit']]);
+                        Html::a($model->verticalModel->name, call_user_func($this->url, $model), ['target' => '_blank', 'style' => ['color' => 'inherit']]);
                 },
             ]
         ];
@@ -66,10 +70,10 @@ class TreeGridView extends Widget
         foreach ($this->treeDataProvider->horizontalModels as $key => $horizontalModel) {
             $columns[] = [
                 'content' => function($model) use ($key) {
-                    return $model->getCell($key)->value;
+                    return call_user_func($this->content, $model->getCell($key), call_user_func($this->url, $model->getCell($key)));
                 },
                 'contentOptions' => function($model) use ($key) {
-                    return ['data-val' => (float) $model->getCell($key)->value];
+                    return call_user_func($this->contentOptions, $model->getCell($key));
                 },
                 'format' => 'currency',
                 'label' => $horizontalModel->name,

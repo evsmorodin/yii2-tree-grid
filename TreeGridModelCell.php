@@ -2,6 +2,7 @@
 
 namespace yegorus\treegrid;
 
+use common\traits\ModelCacheTrait;
 use yii\base\Model;
 
 
@@ -11,40 +12,49 @@ use yii\base\Model;
  */
 class TreeGridModelCell extends Model
 {
-    public $value;
-    public $content;
-    public $link;
+    use ModelCacheTrait;
 
-    public $searchModels;
+    public $callbackValue;
+    public $callbackContent;
+    public $callbackLink;
 
+    public $searchModel;
+
+    /** @var object */
     public $verticalModel;
     public $horizontalModel;
 
-    public function __construct($verticalModel, $horizontalModel, $searchModels, $value, $link, $content, array $config = [])
+    public function __construct($verticalModel, $horizontalModel, $searchModel, $callbackValue, $callbackLink, $callbackContent, array $config = [])
     {
         $this->verticalModel = $verticalModel;
         $this->horizontalModel = $horizontalModel;
-        $this->value = $value;
-        $this->content = $content;
-        $this->link = $link;
-        $this->searchModels = $searchModels;
+        $this->callbackValue = $callbackValue;
+        $this->callbackContent = $callbackContent;
+        $this->callbackLink = $callbackLink;
+        $this->searchModel = $searchModel;
 
         parent::__construct($config);
     }
 
     public function getValue()
     {
-        return call_user_func($this->value, $this->verticalModel, $this->horizontalModel, $this->searchModels);
+        return $this->cachedGet(__METHOD__ . $this->verticalModel->id . $this->horizontalModel->id . serialize($this->searchModel), function () {
+            return call_user_func($this->callbackValue, $this);
+        });
     }
 
-    public function getLink()
+    public function getUrl()
     {
-        return call_user_func($this->link, $this->verticalModel, $this->horizontalModel, $this->searchModels);
+        return $this->cachedGet(__METHOD__ . $this->verticalModel->id . $this->horizontalModel->id . serialize($this->searchModel), function () {
+            return call_user_func($this->callbackLink, $this);
+        });
     }
 
     public function getContent()
     {
-        return call_user_func($this->content, $this->verticalModel, $this->horizontalModel, $this->searchModels);
+        return $this->cachedGet(__METHOD__ . $this->verticalModel->id . $this->horizontalModel->id . serialize($this->searchModel), function () {
+            return call_user_func($this->callbackContent, $this);
+        });
     }
 
 }
