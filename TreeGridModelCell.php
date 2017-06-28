@@ -1,6 +1,6 @@
 <?php
 
-namespace yegorus\gridtreeview;
+namespace yegorus\treegrid;
 
 use yii\base\Model;
 
@@ -11,20 +11,22 @@ use yii\base\Model;
  */
 class TreeGridModelCell extends Model
 {
-    public $callbackValue;
-    public $callbackLink;
+    public $value;
+    public $content;
+    public $link;
 
     public $searchModels;
 
     public $verticalModel;
     public $horizontalModel;
 
-    public function __construct($verticalModel, $horizontalModel, $searchModels, $callbackValue, $callbackLink, array $config = [])
+    public function __construct($verticalModel, $horizontalModel, $searchModels, $value, $link, $content, array $config = [])
     {
         $this->verticalModel = $verticalModel;
         $this->horizontalModel = $horizontalModel;
-        $this->callbackValue = $callbackValue;
-        $this->callbackLink = $callbackLink;
+        $this->value = $value;
+        $this->content = $content;
+        $this->link = $link;
         $this->searchModels = $searchModels;
 
         parent::__construct($config);
@@ -32,12 +34,17 @@ class TreeGridModelCell extends Model
 
     public function getValue()
     {
-        return call_user_func($this->callbackValue, $this->verticalModel, $this->horizontalModel, $this->searchModels);
+        return call_user_func($this->value, $this->verticalModel, $this->horizontalModel, $this->searchModels);
     }
 
     public function getLink()
     {
-        return call_user_func($this->callbackValue, $this->verticalModel, $this->horizontalModel, $this->searchModels);
+        return call_user_func($this->link, $this->verticalModel, $this->horizontalModel, $this->searchModels);
+    }
+
+    public function getContent()
+    {
+        return call_user_func($this->content, $this->verticalModel, $this->horizontalModel, $this->searchModels);
     }
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace yegorus\gridtreeview;
+namespace yegorus\treegrid;
 
 use yii\base\Model;
 
@@ -14,12 +14,12 @@ class TreeGridModelRow extends Model
     public $models;
     public $verticalModel;
 
-    public function __construct($verticalModel, $horizontalModels, $searchModels, $callbackValue, $callbackLink, array $config = [])
+    public function __construct($verticalModel, $horizontalModels, $searchModels, $value, $link, $content, array $config = [])
     {
         $this->verticalModel = $verticalModel;
         foreach ($horizontalModels as $key => $horizontalModel) {
-            $this->models[$key] = new TreeGridModelCell($verticalModel, $horizontalModel, $searchModels, $callbackValue,
-                $callbackLink);
+            $this->models[$key] = new TreeGridModelCell($verticalModel, $horizontalModel, $searchModels, $value,
+                $link, $content);
         }
 
         parent::__construct($config);

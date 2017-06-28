@@ -1,6 +1,6 @@
 <?php
 
-namespace yegorus\gridtreeview;
+namespace yegorus\treegrid;
 
 use Yii;
 use yii\base\InvalidConfigException;
@@ -16,20 +16,23 @@ class TreeDataProvider extends Model
     public $horizontalModels;
     public $searchModels;
 
-    public $callbackValue;
-    public $callbackLink;
+    public $value;
+    public $link;
+    public $content;
 
 
     public function init()
     {
-        if (empty($this->verticalModels) || empty($this->horizontalModels) || empty($this->callbackValue)) {
+        if (empty($this->verticalModels) || empty($this->horizontalModels) || empty($this->value)) {
             throw new InvalidConfigException('Empty verticalModels or horizontalModels params');
         }
 
-        $this->callbackLink = ArrayHelper::getValue($this, 'callbackLink',
+        $this->link = ArrayHelper::getValue($this, 'link',
             function ($verticalModel, $horizontalModel, $searchModel) {
                 return '';
             });
+
+        $this->content = ArrayHelper::getValue($this, 'content', $this->value);
     }
 
     public function getModels()
@@ -37,7 +40,7 @@ class TreeDataProvider extends Model
         $models = [];
         foreach ($this->verticalModels as $verticalModel) {
             $models[] = new TreeGridModelRow($verticalModel, $this->horizontalModels, $this->searchModels,
-                $this->callbackValue, $this->callbackLink);
+                $this->value, $this->link, $this->content);
         }
         return $models;
     }

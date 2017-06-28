@@ -1,5 +1,5 @@
 {
-  "name": "yegorus/yii2-gridtreeview",
+  "name": "yegorus/yii2-tree-grid",
   "description": "Grid Tree View",
   "type": "yii2-extension",
   "keywords": [
@@ -18,13 +18,13 @@
   },
   "autoload": {
     "psr-4": {
-      "yegorus\\gridtreeview\\": ""
+      "yegorus\\treegrid\\": ""
     }
   },
   "repositories": [
     {
       "type": "git",
-      "url": "https://github.com/yegorus/yii2-gridtreeview.git"
+      "url": "https://github.com/yegorus/yii2-tree-grid.git"
     }
   ]
 }

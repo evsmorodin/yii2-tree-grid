@@ -1,6 +1,6 @@
 <?php
 
-namespace yegorus\gridtreeview;
+namespace yegorus\treegrid;
 
 use kartik\grid\GridView;
 use yii\base\Widget;
