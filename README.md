@@ -90,4 +90,4 @@ Once the extension is installed, simply use it in your code by  :
 Result
 -----
 
-![Tree Grid View](http://i.imgur.com/C6X40DV.png)
+![Tree Grid View](http://i.imgur.com/ul81zPH.png)
