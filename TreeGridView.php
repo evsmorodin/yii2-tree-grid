@@ -5,7 +5,6 @@ namespace yegorus\treegrid;
 use kartik\grid\GridView;
 use yii\base\Widget;
 use yii\data\ArrayDataProvider;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 
@@ -25,6 +24,7 @@ class TreeGridView extends Widget
 
     public function run()
     {
+        TreeGridAsset::register($this->view);
         return GridView::widget([
             'dataProvider' => new ArrayDataProvider(['allModels' => $this->treeDataProvider->getModels(), 'pagination' => false]),
             'rowOptions' => function ($model){

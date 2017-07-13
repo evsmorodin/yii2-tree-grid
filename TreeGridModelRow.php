@@ -16,14 +16,13 @@ class TreeGridModelRow extends Model
     public $searchModel;
     public $horizontalModel = null;
 
-    public function __construct($verticalModel, $horizontalModels, $searchModel, $value, $link, $content, array $config = [])
+    public function __construct($verticalModel, $horizontalModels, $searchModel, $value, array $config = [])
     {
         $this->verticalModel = $verticalModel;
         $this->searchModel = $searchModel;
 
         foreach ($horizontalModels as $key => $horizontalModel) {
-            $this->models[$key] = new TreeGridModelCell($verticalModel, $horizontalModel, $searchModel, $value,
-                $link, $content);
+            $this->models[$key] = new TreeGridModelCell($verticalModel, $horizontalModel, $searchModel, $value);
         }
 
         parent::__construct($config);

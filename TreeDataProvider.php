@@ -17,8 +17,6 @@ class TreeDataProvider extends Model
     public $searchModel;
 
     public $value;
-    public $url;
-    public $content;
 
 
     public function init()
@@ -26,12 +24,6 @@ class TreeDataProvider extends Model
         if (empty($this->verticalModels) || empty($this->horizontalModels) || empty($this->value)) {
             throw new InvalidConfigException('Empty verticalModels or horizontalModels params');
         }
-
-        $this->url = ArrayHelper::getValue($this, 'url',
-            function ($model) {
-                return '';
-            });
-        $this->content = ArrayHelper::getValue($this, 'content', $this->value);
     }
 
     public function getModels()
@@ -39,7 +31,7 @@ class TreeDataProvider extends Model
         $models = [];
         foreach ($this->verticalModels as $verticalModel) {
             $models[] = new TreeGridModelRow($verticalModel, $this->horizontalModels, $this->searchModel,
-                $this->value, $this->url, $this->content);
+                $this->value);
         }
         return $models;
     }
