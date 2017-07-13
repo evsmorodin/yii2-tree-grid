@@ -73,7 +73,7 @@ class TreeGridView extends Widget
                     return call_user_func($this->content, $model->getCell($key), call_user_func($this->url, $model->getCell($key)));
                 },
                 'contentOptions' => function($model) use ($key) {
-                    return call_user_func($this->contentOptions, $model->getCell($key));
+                    return $this->contentOptions ? call_user_func($this->contentOptions, $model->getCell($key)) : [];
                 },
                 'format' => 'currency',
                 'label' => $horizontalModel->name,
