@@ -21,6 +21,8 @@ class TreeGridView extends Widget
     public $contentOptions = [];
     public $content;
     public $url;
+    public $totalLine;
+    public $lastHeadersLine;
 
     public function run()
     {
@@ -34,6 +36,7 @@ class TreeGridView extends Widget
                     'data-id' => $model->verticalModel->id,
                 ];
             },
+            'options' => ['class' => 'tree-grid-view'],
             'striped' => false,
             'columns' => $this->getColumns(),
             'export' => false,
@@ -64,8 +67,24 @@ class TreeGridView extends Widget
                     return str_repeat('&nbsp;&nbsp;', $model->verticalModel->lvl * 3) .
                         Html::a($model->verticalModel->name, call_user_func($this->url, $model), ['target' => '_blank', 'style' => ['color' => 'inherit']]);
                 },
-            ]
+            ],
+            
         ];
+        
+        if ($this->totalLine) {
+            $columns[] = [
+                'contentOptions' => [
+                    'class' => 'total-line',
+                    'data-val' => 0,
+                ],
+                'headerOptions' => [
+                    'class' => 'total-line-header',
+                ],
+                'label' => 'Всего',
+                'pageSummaryOptions' => ['class' => 'js-recalc-sum'],
+            ];
+        }
+        
 
         foreach ($this->treeDataProvider->horizontalModels as $key => $horizontalModel) {
             $columns[] = [
@@ -80,6 +99,10 @@ class TreeGridView extends Widget
                 'pageSummary' => 0,
                 'pageSummaryOptions' => ['class' => 'js-recalc-sum']
             ];
+        }
+        
+        if ($this->lastHeadersLine) {
+            $columns[] = $columns[1];
         }
 
         return $columns;
