@@ -23,6 +23,7 @@ class TreeGridView extends Widget
     public $url;
     public $totalLine;
     public $lastHeadersLine;
+    public $totalLineAfterOne;
 
     public function run()
     {
@@ -85,7 +86,9 @@ class TreeGridView extends Widget
             ];
         }
         
-
+        if ($this->totalLineAfterOne) {
+            $columns[] = [];
+        }
         foreach ($this->treeDataProvider->horizontalModels as $key => $horizontalModel) {
             $columns[] = [
                 'content' => function($model) use ($key) {
@@ -99,6 +102,21 @@ class TreeGridView extends Widget
                 'pageSummary' => 0,
                 'pageSummaryOptions' => ['class' => 'js-recalc-sum']
             ];
+        }
+        
+        if ($this->totalLineAfterOne) {
+           $columns[3] = $columns[4];
+           $columns[4] = [
+               'contentOptions' => [
+                   'class' => 'total-line-after-one',
+                   'data-val' => 0,
+               ],
+               'headerOptions' => [
+                   'class' => 'total-line-header',
+               ],
+               'label' => 'Всего (кроме последнего месяца)',
+               'pageSummaryOptions' => ['class' => 'js-recalc-sum'],
+           ];
         }
         
         if ($this->lastHeadersLine) {

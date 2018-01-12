@@ -45,6 +45,21 @@
 			});
 		}
 
+		var $totalLineAfterOne = $('.total-line-after-one');
+		if ($totalLineAfterOne.length) {
+			$totalLineAfterOne.each(function () {
+				var sum = 0;
+				$(this).closest('tr').find('[data-val]').each(function (index) {
+					if (index > 2) {
+						sum += parseFloat($(this).data('val'));
+					}
+				});
+
+				$(this).data('val', sum);
+				$(this).html('<span class="text-danger">' + getCurrency(sum) + '</span>');
+			});
+		}
+
 		// Fix для виджета с выплатами. Считаем сумма по столбцам исключая повторения.
 		if ($('.js-recalc-sum').length) {
 			$('.js-recalc-sum').each(function (index) {
