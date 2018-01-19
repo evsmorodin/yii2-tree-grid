@@ -20,11 +20,25 @@ class TreeGridView extends Widget
 
     public $contentOptions = [];
     public $content;
+    public $header;
     public $url;
     public $totalLine;
     public $lastHeadersLine;
     public $totalLineAfterOne;
-
+    
+    
+    public function init()
+    {
+        if (!$this->header) {
+            $this->header = function ($model) {
+                return $model->name;
+            };
+        }
+        
+        parent::init();
+    }
+    
+    
     public function run()
     {
         TreeGridAsset::register($this->view);
@@ -98,7 +112,7 @@ class TreeGridView extends Widget
                     return $this->contentOptions ? call_user_func($this->contentOptions, $model->getCell($key)) : [];
                 },
                 'format' => 'currency',
-                'label' => $horizontalModel->name,
+                'header' => call_user_func($this->header, $horizontalModel),
                 'pageSummary' => 0,
                 'pageSummaryOptions' => ['class' => 'js-recalc-sum']
             ];
